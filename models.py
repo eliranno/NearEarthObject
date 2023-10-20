@@ -19,6 +19,7 @@ You'll edit this file in Task 1.
 """
 from helpers import cd_to_datetime, datetime_to_str
 import datetime
+import math
 
 
 class NearEarthObject:
@@ -35,7 +36,7 @@ class NearEarthObject:
     """
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
-    def __init__(self, designation:str, name:str=None, diameter=float('nan'), hazardous=False, approaches:list=[]):
+    def __init__(self, designation:str, name:str=None, diameter=float('nan'), hazardous=False, approaches=[]):
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -51,7 +52,7 @@ class NearEarthObject:
         self.hazardous = hazardous
 
         # Create an empty initial collection of linked approaches.
-        self.approaches = approaches
+        self.approaches = []
     
     @property
     def fullname(self):
@@ -67,12 +68,27 @@ class NearEarthObject:
         # TODO: Use this object's attributes to return a human-readable string representation.
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
-        return f"A NearEarthObject ..."
+        """Return `str(self)`."""
+        if self.diameter and not math.isnan(self.diameter):
+            diameter_str = f"a diameter of {self.diameter:.3f} km"
+        else:
+            diameter_str = "an unknown diameter"
+        hazardous_str = "potentially hazardous" if self.hazardous else "not potentially hazardous"
+        return f"NEO {self.fullname} has {diameter_str} and is {hazardous_str}."
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+    
+    
+    def serialize(self):
+        return dict(
+            name=self.name,
+            designation=self.designation,
+            diameter_km=self.diameter,
+            potentially_hazardous=self.hazardous
+        )
 
 
 class CloseApproach:
@@ -90,7 +106,7 @@ class CloseApproach:
     """
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
-    def __init__(self, designation:str, time:datetime.datetime, distance:float,velocity:float,neo:str=None):
+    def __init__(self, designation:str, time:datetime.datetime, distance:float,velocity:float):
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -105,7 +121,7 @@ class CloseApproach:
         self.velocity = velocity
 
         # Create an attribute for the referenced NEO, originally None.
-        self.neo = neo
+        self.neo :NearEarthObject = None
         
     @property
     def designation(self):
@@ -140,3 +156,16 @@ class CloseApproach:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+    
+    def serialize(self,flatten=False):
+        serialized = dict(
+            datetime_utc=self.time_str,
+            distance_au=self.distance,
+            velocity_km_s=self.velocity,
+        )
+        seralized_neo = self.neo.serialize()
+        if flatten:
+            serialized.update(seralized_neo)
+        else:
+            serialized['neo'] = seralized_neo
+        return serialized
