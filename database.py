@@ -11,7 +11,8 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 
 You'll edit this file in Tasks 2 and 3.
 """
-
+from models import NearEarthObject, CloseApproach
+from typing import List
 
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
@@ -21,7 +22,7 @@ class NEODatabase:
     help fetch NEOs by primary designation or by name and to help speed up
     querying for close approaches that match criteria.
     """
-    def __init__(self, neos, approaches):
+    def __init__(self, neos:List[NearEarthObject], approaches:List[CloseApproach]):
         """Create a new `NEODatabase`.
 
         As a precondition, this constructor assumes that the collections of NEOs
@@ -50,11 +51,12 @@ class NEODatabase:
         for approach in self._approaches:
             if approach.designation in self._neos_idx_by_designation:
                 neo = self.get_neo_by_designation(approach.designation)
+                approach.neo = neo
                 if neo:
                     neo.approaches.append(approach)
-                    approach.neo = self._neos[idx]
+                    
 
-    def get_neo_by_designation(self, designation) -> NearEarthObject:
+    def get_neo_by_designation(self, designation:str) -> NearEarthObject:
         """Find and return an NEO by its primary designation.
 
         If no match is found, return `None` instead.
@@ -69,10 +71,10 @@ class NEODatabase:
         """
         # TODO: Fetch an NEO by its primary designation.
         idx = self._neos_idx_by_designation.get(designation,None)
-        return self._neos[idx] if idx else None
+        return self._neos[idx] if idx is not None else None
         
 
-    def get_neo_by_name(self, name):
+    def get_neo_by_name(self, name:str):
         """Find and return an NEO by its name.
 
         If no match is found, return `None` instead.
@@ -88,7 +90,7 @@ class NEODatabase:
         """
         # TODO: Fetch an NEO by its name.
         idx = self._neos_idx_by_name.get(name,None)
-        return self._approaches[idx] if idx else None
+        return self._neos[idx] if idx else None
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.

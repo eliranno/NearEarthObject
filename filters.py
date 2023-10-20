@@ -137,21 +137,22 @@ def create_filters(
     :return: A collection of filters for use with `query`.
     """
     # TODO: Decide how you will represent your filters.
-    filters = [];
+    filters = []
     
-    def add_filter(value,op):
-        if value:
-            filters.append(AttributeFilter(op,value))
+    def add_filter(value,op,filter_cls):
+        if value is not None:
+            filters.append(filter_cls(op,value))
     
-    add_filter(date, operator.eq)
-    add_filter(start_date, operator.le)
-    add_filter(end_date,operator.le)
-    add_filter(distance_min,operator.ge)
-    add_filter(distance_max,operator.le)
-    add_filter(velocity_min,operator.ge)
-    add_filter(velocity_max,operator.le)
-    add_filter(diameter_min,operator.ge)
-    add_filter(diameter_max,operator.le)
+    add_filter(date, operator.eq,DateAttributeFilter)
+    add_filter(start_date, operator.le,DateAttributeFilter)
+    add_filter(end_date,operator.le,DateAttributeFilter)
+    add_filter(distance_min,operator.ge,DistanceAttributeFilter)
+    add_filter(distance_max,operator.le,DistanceAttributeFilter)
+    add_filter(velocity_min,operator.ge,DistanceAttributeFilter)
+    add_filter(velocity_max,operator.le,VelocityAttributeFilter)
+    add_filter(diameter_min,operator.ge,DiameterAttributeFilter)
+    add_filter(diameter_max,operator.le,DiameterAttributeFilter)
+    add_filter(hazardous,operator.eq,HazardousAttributeFilter)
     
     return tuple(filters)
 
