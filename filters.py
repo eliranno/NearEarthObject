@@ -77,7 +77,7 @@ class AttributeFilter:
 class DateAttributeFilter(AttributeFilter):
     @classmethod
     def get(cls,approach:CloseApproach):
-        return approach.date
+        return approach.time.date()
 
 class DistanceAttributeFilter(AttributeFilter):
     @classmethod
@@ -144,11 +144,11 @@ def create_filters(
             filters.append(filter_cls(op,value))
     
     add_filter(date, operator.eq,DateAttributeFilter)
-    add_filter(start_date, operator.le,DateAttributeFilter)
+    add_filter(start_date, operator.ge,DateAttributeFilter)
     add_filter(end_date,operator.le,DateAttributeFilter)
     add_filter(distance_min,operator.ge,DistanceAttributeFilter)
     add_filter(distance_max,operator.le,DistanceAttributeFilter)
-    add_filter(velocity_min,operator.ge,DistanceAttributeFilter)
+    add_filter(velocity_min,operator.ge,VelocityAttributeFilter)
     add_filter(velocity_max,operator.le,VelocityAttributeFilter)
     add_filter(diameter_min,operator.ge,DiameterAttributeFilter)
     add_filter(diameter_max,operator.le,DiameterAttributeFilter)
@@ -167,4 +167,4 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
     """
     # TODO: Produce at most `n` values from the given iterator.
-    return itertools.islice(iterator,n) if n else iterator
+    return tuple(itertools.islice(iterator,n) if n else iterator)

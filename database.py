@@ -107,5 +107,8 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
+        if not filters:
+            yield from self._approaches
         for approach in self._approaches:
-            yield approach
+            if all(f(approach) for f in filters):
+                yield approach

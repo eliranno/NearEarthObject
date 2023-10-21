@@ -18,7 +18,7 @@ quirks of the data set, such as missing names and unknown diameters.
 You'll edit this file in Task 1.
 """
 from helpers import cd_to_datetime, datetime_to_str
-import datetime
+from datetime import datetime
 import math
 
 
@@ -106,7 +106,7 @@ class CloseApproach:
     """
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
-    def __init__(self, designation:str, time:datetime.datetime, distance:float,velocity:float):
+    def __init__(self, designation:str, time:datetime, distance:float,velocity:float):
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
