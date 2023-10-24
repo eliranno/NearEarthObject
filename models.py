@@ -51,6 +51,7 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
+        
         if self.name:
             return f'{self.designation} ({self.name})'
         else:
@@ -58,6 +59,7 @@ class NearEarthObject:
 
     def __str__(self):
         """Return `str(self)`."""
+        
         if self.diameter and not math.isnan(self.diameter):
             diameter_str = f"a diameter of {self.diameter:.3f} km"
         else:
@@ -67,6 +69,7 @@ class NearEarthObject:
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
+        
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
     
@@ -97,7 +100,7 @@ class CloseApproach:
     
     def __init__(self, designation:str, time:datetime, distance:float,velocity:float):
         """Create a new `CloseApproach`.
-
+        
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
         self._designation = designation
@@ -133,11 +136,13 @@ class CloseApproach:
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
+        
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
     
     def serialize(self,flatten=False):
         """Return serialized object as a dictionary."""
+        
         serialized = dict(
             datetime_utc=self.time_str,
             distance_au=self.distance,
