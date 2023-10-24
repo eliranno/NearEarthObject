@@ -86,7 +86,6 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
-        
         idx = self._neos_idx_by_name.get(name,None)
         return self._neos[idx] if idx else None
 
@@ -103,8 +102,7 @@ class NEODatabase:
 
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
-        """
-        
+        """ 
         if not filters:
             yield from self._approaches
         for approach in self._approaches:
