@@ -75,28 +75,43 @@ class AttributeFilter:
     
 
 class DateAttributeFilter(AttributeFilter):
+    """Filter class for Date filter argument."""
+    
     @classmethod
     def get(cls,approach:CloseApproach):
+        ""get attibute to be compared."""
         return approach.time.date()
 
 class DistanceAttributeFilter(AttributeFilter):
+    """Filter class for Distance filter argument."""
+    
     @classmethod
     def get(cls,approach:CloseApproach):
+         ""get attibute to be compared."""
         return approach.distance
     
 class VelocityAttributeFilter(AttributeFilter):
+    """Filter class for Velocity filter argument."""
+    
     @classmethod
     def get(cls,approach:CloseApproach):
+         ""get attibute to be compared."""
         return approach.velocity
     
 class HazardousAttributeFilter(AttributeFilter):
+    """Filter class for Hazardous filter argument."""
+    
     @classmethod
     def get(cls,approach:CloseApproach):
+        ""get attibute to be compared."""
         return approach.neo.hazardous
 
 class DiameterAttributeFilter(AttributeFilter):
+    """Filter class for Diameter filter argument."""
+    
     @classmethod
     def get(cls,approach:CloseApproach):
+         ""get attibute to be compared."""
         return approach.neo.diameter
 
 
@@ -140,6 +155,8 @@ def create_filters(
     filters = []
     
     def add_filter(value,op,filter_cls):
+        ""Decorator for adding filters based on cmd arguments."""
+        
         if value is not None:
             filters.append(filter_cls(op,value))
     
