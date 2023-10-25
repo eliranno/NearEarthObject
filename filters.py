@@ -72,6 +72,7 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Get s string representation of the object."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
     
 
@@ -80,39 +81,39 @@ class DateAttributeFilter(AttributeFilter):
     
     @classmethod
     def get(cls,approach:CloseApproach):
-        ""get attibute to be compared."""
+        """Get filter attribute."""  
         return approach.time.date()
 
 class DistanceAttributeFilter(AttributeFilter):
     """Filter class for Distance filter argument."""
-    
+
     @classmethod
     def get(cls,approach:CloseApproach):
-         ""get attibute to be compared."""
+        """Get filter attribute."""
         return approach.distance
     
 class VelocityAttributeFilter(AttributeFilter):
     """Filter class for Velocity filter argument."""
-    
+
     @classmethod
     def get(cls,approach:CloseApproach):
-         ""get attibute to be compared."""
+        """Get filter attribute."""
         return approach.velocity
     
 class HazardousAttributeFilter(AttributeFilter):
     """Filter class for Hazardous filter argument."""
-    
+
     @classmethod
     def get(cls,approach:CloseApproach):
-        ""get attibute to be compared."""
+        """Get filter attribute."""
         return approach.neo.hazardous
 
 class DiameterAttributeFilter(AttributeFilter):
     """Filter class for Diameter filter argument."""
-    
+
     @classmethod
     def get(cls,approach:CloseApproach):
-         ""get attibute to be compared."""
+        """Get filter attribute."""
         return approach.neo.diameter
 
 
@@ -152,14 +153,14 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    
     filters = []
     
     def add_filter(value,op,filter_cls):
-        ""Decorator for adding filters based on cmd arguments."""
-        
+        """Decorate for addingfilters based on cmd arguments."""
         if value is not None:
             filters.append(filter_cls(op,value))
+    
+
     
     add_filter(date, operator.eq,DateAttributeFilter)
     add_filter(start_date, operator.ge,DateAttributeFilter)
@@ -184,5 +185,4 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    
     return tuple(itertools.islice(iterator,n) if n else iterator)
